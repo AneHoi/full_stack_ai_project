@@ -1,6 +1,6 @@
 ﻿namespace infrastructure.Models;
 
-public class ComputerVisionReponseDto
+public class ComputerVisionResponseDto
 {
     
 }

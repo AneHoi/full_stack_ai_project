@@ -6,6 +6,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Web;
+using infrastructure.Models;
 
 namespace service;
 
@@ -29,6 +30,18 @@ public static class ComputerVisionService
 
         HttpResponseMessage response;
 
+        /* Object from image stream
+        
+        // Request body
+        byte[] byteData = File.ReadAllBytes("C:\\Users\\micha\\Documents\\CSe2022A\\4. semester\\Fullstack\\AI Project\\marcipan.jpg");
+
+        using (var content = new ByteArrayContent(byteData))
+        {
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+            response = await client.PostAsync(uri, content);
+        }
+        */
+        
         // Create your object
         var requestBody = new
         {
@@ -43,12 +56,15 @@ public static class ComputerVisionService
         {
             response = await client.PostAsync(uri, content);
         }
-
+        
         // Handle response
         if (response.IsSuccessStatusCode)
         {
             string responseContent = await response.Content.ReadAsStringAsync();
             Console.WriteLine("Response: " + responseContent);
+            var obj = JsonSerializer.Deserialize<Root>(responseContent);
+            string content = obj.readResult.content;
+            Console.WriteLine("\nContent part: \n" + content);
         }
         else
         {
