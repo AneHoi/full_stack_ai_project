@@ -68,7 +68,7 @@ public class Helper
         DROP SCHEMA IF EXISTS allergenedb CASCADE;
         CREATE SCHEMA allergenedb;
 
-        create table if not exists allergenedb.user
+        create table if not exists allergenedb.users
         (
             id          SERIAL          PRIMARY KEY,
             username    VARCHAR(50)     NOT NULL,
@@ -81,6 +81,6 @@ public class Helper
             hash            VARCHAR(350)    NOT NULL,
             salt            VARCHAR(180)    NOT NULL,
             algorithm       VARCHAR(12)     NOT NULL,
-            FOREIGN KEY(user_id) REFERENCES TaxApp.users(id)
+            FOREIGN KEY(user_id) REFERENCES allergenedb.users(id)
         );";
 }

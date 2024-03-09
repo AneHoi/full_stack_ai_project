@@ -16,7 +16,7 @@ public class UserRepository
     public User Create(string username, int tlfnumber, string email)
     {
         const string sql = $@"
-INSERT INTO Taxapp.users (username, tlfnumber, email)
+INSERT INTO allergenedb.users (username, tlfnumber, email)
 VALUES (@username, @tlfnumber, @email)
 RETURNING
     id as {nameof(User.id)},
@@ -39,7 +39,7 @@ SELECT
     username as {nameof(User.username)},
     tlfnumber as {nameof(User.tlfnumber)},
     email as {nameof(User.email)}
-FROM taxapp.users
+FROM allergenedb.users
 WHERE id = @id;
 ";
         using var connection = _dataSource.OpenConnection();

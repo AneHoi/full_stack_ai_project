@@ -12,33 +12,34 @@ public class AccountController : ControllerBase
 {
     private readonly AccountService _service;
     private readonly JwtService _jwtService;
-    
+
     public AccountController(AccountService service, JwtService jwtService)
     {
         _service = service;
         _jwtService = jwtService;
     }
-    
-        [HttpPost]
-        [Route("/account/login")]
-        public ResponseDto Login([FromBody] LoginDto dto)
+
+    [HttpPost]
+    [Route("/account/login")]
+    public ResponseDto Login([FromBody] LoginDto dto)
+    {
+        var user = _service.Authenticate(dto.email, dto.password);
+        //Creating a token from the user
+        //The "!" indicates that you are sure nullableString is not null
+        var token = _jwtService.IssueToken(SessionData.FromUser(user!));
+        return new ResponseDto
         {
-            var user = _service.Authenticate(dto.email, dto.password);
-            //Creating a token from the user
-            //The "!" indicates that you are sure nullableString is not null
-            var token = _jwtService.IssueToken(SessionData.FromUser(user!));
-            return new ResponseDto
-            {
-                MessageToClient = "Successfully authenticated",
-                ResponseData = new { token }
-            };
-        }
+            MessageToClient = "Successfully authenticated",
+            ResponseData = new { token }
+        };
+    }
 
     [HttpPost]
     [Route("/account/register")]
     public ResponseDto Register([FromBody] RegisterDto dto)
     {
-        Console.WriteLine("Hi Im: \t\t" + dto.username + "\nmy number:\t" + dto.tlfnumber.ToString() + "\nmy email:\t" + dto.email + "\nPassword:\t" + dto.password);
+        Console.WriteLine("Hi Im: \t\t" + dto.username + "\nmy number:\t" + dto.tlfnumber.ToString() + "\nmy email:\t" +
+                          dto.email + "\nPassword:\t" + dto.password);
         var user = _service.Register(dto.username, dto.tlfnumber, dto.email, dto.password);
         return new ResponseDto
         {
@@ -47,18 +48,20 @@ public class AccountController : ControllerBase
         };
     }
 
+    [RequireAuthentication]
     [HttpPost]
     [Route("/account/Try")]
     public ResponseDto Register(string name)
     {
         Console.WriteLine("Hi Im: " + name);
-        
+
         return new ResponseDto
         {
             MessageToClient = "Successfully registered",
             ResponseData = "You are now a user"
         };
     }
+
     [RequireAuthentication]
     [HttpGet]
     [Route("/account/whoami")]
