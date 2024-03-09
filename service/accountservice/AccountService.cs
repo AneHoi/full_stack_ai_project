@@ -2,6 +2,7 @@ using System.Security.Authentication;
 using infrastructure.datamodels;
 using infrastructure.repositories;
 using Microsoft.Extensions.Logging;
+
 namespace service.accountservice;
 
 public class AccountService
@@ -28,17 +29,19 @@ public class AccountService
     {
         try
         {
-            var passwordHash = _passwordHashRepository.GetByEmail(email); //Call Infrastructure to get the PasswordHash from the Email
+            var passwordHash =
+                _passwordHashRepository.GetByEmail(email); //Call Infrastructure to get the PasswordHash from the Email
             var hashAlgorithm = PasswordHashAlgorithm.Create(passwordHash.Algorithm); //Creates the hashing algorithm
             //Using the algorithm we just created, we try to validate it.
             //It takes in the password and salt, hashes it, and it takes the hashed from the db, and returns, if they match or not.
-            var isValid = hashAlgorithm.VerifyHashedPassword(password, passwordHash.Hash, passwordHash.Salt); 
+            var isValid = hashAlgorithm.VerifyHashedPassword(password, passwordHash.Hash, passwordHash.Salt);
             if (isValid) return _userRepository.GetById(passwordHash.UserId);
         }
         catch (Exception e)
         {
             //logs the error instead of sending the exact information to the user.
-            _logger.LogError("Authenticate error: {Message}", e);
+            if (_logger != null)
+                _logger.LogError("Authenticate error: {Message}", e);
         }
 
         throw new InvalidCredentialException("Invalid credential!");

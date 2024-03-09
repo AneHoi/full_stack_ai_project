@@ -18,20 +18,20 @@ public class AccountController : ControllerBase
         _jwtService = jwtService;
     }
     
-    [HttpPost]
-    [Route("/account/login")]
-    public ResponseDto Login([FromBody] LoginDto dto)
-    {
-        var user = _service.Authenticate(dto.email, dto.password);
-        //Creating a token from the user
-        //The "!" indicates that you are sure nullableString is not null
-        var token = _jwtService.IssueToken(SessionData.FromUser(user!));
-        return new ResponseDto
+        [HttpPost]
+        [Route("/account/login")]
+        public ResponseDto Login([FromBody] LoginDto dto)
         {
-            MessageToClient = "Successfully authenticated",
-            ResponseData = new { token }
-        };
-    }
+            var user = _service.Authenticate(dto.email, dto.password);
+            //Creating a token from the user
+            //The "!" indicates that you are sure nullableString is not null
+            var token = _jwtService.IssueToken(SessionData.FromUser(user!));
+            return new ResponseDto
+            {
+                MessageToClient = "Successfully authenticated",
+                ResponseData = new { token }
+            };
+        }
 
     [HttpPost]
     [Route("/account/register")]
@@ -46,6 +46,18 @@ public class AccountController : ControllerBase
         };
     }
 
+    [HttpPost]
+    [Route("/account/Try")]
+    public ResponseDto Register(string name)
+    {
+        Console.WriteLine("Hi Im: " + name);
+        
+        return new ResponseDto
+        {
+            MessageToClient = "Successfully registered",
+            ResponseData = "You are now a user"
+        };
+    }
     [RequireAuthentication]
     [HttpGet]
     [Route("/account/whoami")]
