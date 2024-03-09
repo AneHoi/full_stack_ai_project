@@ -1,16 +1,18 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
+    <ion-title class="ion-text-center">
       Select your allergies ❎
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="false">
+  <ion-item class="ion-padding">
+    <ion-select #select [value]="usersAllergies" (ionChange)="handleUserSelection($event)"
+                multiple="true" placeholder="Allergies" cancelText="Cancel" okText="Save">
+      <div slot="label">Allergens</div>
+      <ion-select-option *ngFor="let allergy of allergens" [value]="allergy.id">{{allergy.name}}</ion-select-option>
+    </ion-select>
 
+  </ion-item>
 </ion-content>
