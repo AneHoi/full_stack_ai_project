@@ -4,6 +4,7 @@ namespace api.dtoModels;
 
 public class RegisterDto
 {
+    
     [Required] public string username { get; set; }
     
     [Required] public int tlfnumber { get; set; }
@@ -14,4 +15,5 @@ public class RegisterDto
     [Required]
     [MinLength(8)]
     public string password { get; set; }
+
 }
