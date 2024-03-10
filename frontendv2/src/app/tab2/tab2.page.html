@@ -9,10 +9,12 @@
 <ion-content [fullscreen]="false">
   <ion-item class="ion-padding">
     <ion-select #select [value]="usersAllergies" (ionChange)="handleUserSelection($event)"
-                multiple="true" placeholder="Allergies" cancelText="Cancel" okText="Save">
+                multiple="true" placeholder="Allergies" cancelText="Cancel" okText="Select">
       <div slot="label">Allergens</div>
       <ion-select-option *ngFor="let allergy of allergens" [value]="allergy.id">{{allergy.name}}</ion-select-option>
     </ion-select>
-
   </ion-item>
+  <div class="parent">
+    <ion-button class="child" (click)="saveAllergens()">Save</ion-button>
+  </div>
 </ion-content>

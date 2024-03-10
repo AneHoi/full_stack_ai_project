@@ -1,6 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonSelect} from '@ionic/angular';
-import {finalize} from "rxjs";
+import {firstValueFrom} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 
 @Component({
@@ -50,11 +50,11 @@ export class Tab2Page {
     }
   }
 
-  saveAllergens() {
-    this.http.post<Allergen[]>("http://localhost:5100/INDSÆT_URL", this.usersAllergies)
-      .pipe(finalize(() => {
-        //toast og redirect?
-      }));
+  async saveAllergens() {
+    const call = this.http.post<Allergen[]>("http://localhost:5096/api/saveAllergens", this.usersAllergies);
+    const response = await firstValueFrom<Allergen[]>(call);
+
+    //TODO Handle response (show a toast & redirect?)
   }
 }
 
