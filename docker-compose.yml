@@ -1,0 +1,20 @@
+﻿services:
+  db:
+    image: mysql
+    restart: always
+    volumes:
+      - ./infrastructure/db/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: Blog
+    ports:
+      - 63306:3306
+
+  flyway:
+    image: flyway/flyway:10
+    command: migrate
+    volumes:
+      - ./infrastructure/db/migration:/flyway/sql
+      - ./infrastructure/db:/flyway/conf
+    depends_on:
+      - db

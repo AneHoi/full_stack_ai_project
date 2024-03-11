@@ -10,13 +10,18 @@ public class AccountService
     private readonly ILogger<AccountService> _logger;
     private readonly PasswordHashRepository _passwordHashRepository;
     private readonly UserRepository _userRepository;
+    private readonly MySQLRepo _mySqlRepo;
 
-    public AccountService(ILogger<AccountService> logger, UserRepository userRepository,
-        PasswordHashRepository passwordHashRepository)
+    public AccountService(
+        ILogger<AccountService> logger, 
+        UserRepository userRepository,
+        PasswordHashRepository passwordHashRepository,
+        MySQLRepo mySqlRepo)
     {
         _logger = logger;
         _userRepository = userRepository;
         _passwordHashRepository = passwordHashRepository;
+        _mySqlRepo = mySqlRepo;
     }
 
     /**
@@ -58,6 +63,7 @@ public class AccountService
         var hash = hashAlgorithm.HashPassword(password, salt);
         var user = _userRepository.Create(username, tlfnumber, email);
         _passwordHashRepository.Create(user.id, hash, salt, hashAlgorithm.GetName());
+        _mySqlRepo.Test();
         return user;
     }
 

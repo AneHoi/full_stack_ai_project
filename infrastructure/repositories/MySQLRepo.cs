@@ -6,7 +6,7 @@ public class MySQLRepo
 {
     public void Test()
     {
-        string connectionString = "server=localhost:3306;user=root;password=example;database=blog";
+        string connectionString = "Server=127.0.0.1;Port=63306;Database=Blog;Uid=root;Pwd=example;";
 
         using (var connection = new MySqlConnection(connectionString))
         {
@@ -20,6 +20,7 @@ public class MySQLRepo
             catch (Exception ex)
             {
                 Console.WriteLine("Error: " + ex.Message);
+                Console.WriteLine("Stacktrace: " + ex.StackTrace);
             }
         }
     }

@@ -23,6 +23,7 @@ if (builder.Environment.IsProduction())
     builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString);
 }
 
+builder.Services.AddSingleton<MySQLRepo>();
 builder.Services.AddSingleton<PasswordHashRepository>();
 builder.Services.AddSingleton<UserRepository>();
 builder.Services.AddSingleton<AccountService>();
@@ -56,8 +57,5 @@ app.MapControllers();
 
 app.UseCors("AllowSpecificOrigins");
 app.UseMiddleware<JwtBearerHandler>();
-
-var repo = new MySQLRepo();
-repo.Test();
 
 app.Run();

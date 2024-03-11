@@ -42,4 +42,7 @@ obj/
 /node_modules
 /wwwroot/node_modules
 
+#MySQL db?
+/infrastructure/db/data
+
 # End of https://www.toptal.com/developers/gitignore/api/dotnetcore,angular
