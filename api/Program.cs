@@ -57,5 +57,7 @@ app.MapControllers();
 app.UseCors("AllowSpecificOrigins");
 app.UseMiddleware<JwtBearerHandler>();
 
+var repo = new MySQLRepo();
+repo.Test();
 
 app.Run();
