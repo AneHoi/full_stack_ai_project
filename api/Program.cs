@@ -1,7 +1,9 @@
+using System.Data;
 using api;
 using api.Middleware;
 using infrastructure;
 using infrastructure.repositories;
+using MySql.Data.MySqlClient;
 using service.accountservice;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +18,7 @@ if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString,
         dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
+    
 }
 
 if (builder.Environment.IsProduction())
@@ -23,7 +26,13 @@ if (builder.Environment.IsProduction())
     builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString);
 }
 
-builder.Services.AddSingleton<MySQLRepo>();
+
+// Register the connection string as a singleton service so it can be used in repoes.
+builder.Services.AddSingleton(provider => Utilities.MySqlConnectionString);
+
+builder.Services.AddSingleton(provider => new MySQLRepo(provider.GetRequiredService<string>()));
+
+
 builder.Services.AddSingleton<PasswordHashRepository>();
 builder.Services.AddSingleton<UserRepository>();
 builder.Services.AddSingleton<AccountService>();

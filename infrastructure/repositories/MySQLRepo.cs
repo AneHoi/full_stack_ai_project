@@ -4,11 +4,18 @@ namespace infrastructure.repositories;
 
 public class MySQLRepo
 {
+        
+    private readonly string _connectionString;
+
+    public MySQLRepo(string connectionString)
+    {
+        _connectionString = connectionString;
+    }
+
+    
     public void Test()
     {
-        string connectionString = "Server=127.0.0.1;Port=63306;Database=Blog;Uid=root;Pwd=example;";
-
-        using (var connection = new MySqlConnection(connectionString))
+        using (var connection = new MySqlConnection(_connectionString))
         {
             try
             {

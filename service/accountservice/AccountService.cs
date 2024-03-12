@@ -58,6 +58,7 @@ public class AccountService
      */
     public User Register(string username, int tlfnumber, string email, string password)
     {
+        /**
         var hashAlgorithm = PasswordHashAlgorithm.Create();
         var salt = hashAlgorithm.GenerateSalt();
         var hash = hashAlgorithm.HashPassword(password, salt);
@@ -65,6 +66,9 @@ public class AccountService
         _passwordHashRepository.Create(user.id, hash, salt, hashAlgorithm.GetName());
         _mySqlRepo.Test();
         return user;
+        */
+        _mySqlRepo.Test();
+        return new User();
     }
 
     public object Get(SessionData data)

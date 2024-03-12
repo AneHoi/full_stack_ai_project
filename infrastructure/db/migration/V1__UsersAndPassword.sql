@@ -15,3 +15,6 @@ CREATE TABLE allergenedb.password_hash (
                                            algorithm VARCHAR(12) NOT NULL,
                                            FOREIGN KEY (user_id) REFERENCES allergenedb.users (id)
 );
+
+INSERT INTO allergenedb.users (username, tlfnumber, email)
+VALUES ('nybruger', 123456789, 'nybruger@example.com');
