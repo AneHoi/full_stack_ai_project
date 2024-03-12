@@ -1,0 +1,18 @@
+
+<ion-content>
+  <section class="parentdiv">
+    <div class="childdiv">
+      <ion-input label="Username" [formControl]="createNewUserForm.controls.username" label-placement="floating" placeholder="Username"></ion-input>
+      <br />
+      <ion-input label="TlfNumber" [formControl]="createNewUserForm.controls.tlfnumber" label-placement="floating" placeholder="Telephone number"></ion-input>
+      <br />
+      <ion-input label="Email" [formControl]="createNewUserForm.controls.email" label-placement="floating" placeholder="Email@example.com"></ion-input>
+      <br />
+      <ion-input label="Password" [formControl]="createNewUserForm.controls.password" label-placement="floating" type="password" placeholder="Password"></ion-input>
+      <br />
+      <ion-input label="Confirm Password" [formControl]="createNewUserForm.controls.repeatPassword" label-placement="floating" type="password" placeholder="Confirm Password"></ion-input>
+      <br />
+      <ion-button routerLink="../home" [disabled]="createNewUserForm.invalid" (click)="submit()">Register</ion-button>
+    </div>
+  </section>
+</ion-content>
