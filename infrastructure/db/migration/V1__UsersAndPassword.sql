@@ -16,5 +16,26 @@ CREATE TABLE allergenedb.password_hash (
                                            FOREIGN KEY (user_id) REFERENCES allergenedb.users (id)
 );
 
+CREATE TABLE allergenedb.products (
+                                      barcode VARCHAR(50) PRIMARY KEY,
+                                      language VARCHAR(50),
+                                      name VARCHAR(100),
+                                      productName VARCHAR(100),
+                                      declaration TEXT
+);
+
+CREATE TABLE allergenedb.categories (
+                                        id INT AUTO_INCREMENT PRIMARY KEY,
+                                        category_name VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE allergenedb.allergens (
+                                       id INT AUTO_INCREMENT PRIMARY KEY,
+                                       allergen_name VARCHAR(100) NOT NULL UNIQUE,
+                                       category_id INT,
+                                       FOREIGN KEY (category_id) REFERENCES allergenedb.categories(id)
+);
+
+
 INSERT INTO allergenedb.users (username, tlfnumber, email)
 VALUES ('nybruger', 123456789, 'nybruger@example.com');
