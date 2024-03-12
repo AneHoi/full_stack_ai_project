@@ -69,11 +69,7 @@ public class Tests
         var response = await _http.PostAsync(baseUri + "/account/login", content);
 
         Assert.IsNotNull(response);
-        //Assert.AreEqual("Successfully authenticated");
-
-        // Depending on the structure of your ResponseDto, you may need to adjust this assertion
-        //Assert.IsNotNull(response.ResponseData);
-        //Assert.IsNotNull(response.ResponseData.ToString());
+        
     }
 
     [TearDownAttribute]
