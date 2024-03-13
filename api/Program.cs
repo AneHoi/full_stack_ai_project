@@ -2,6 +2,8 @@ using api;
 using api.Middleware;
 using infrastructure;
 using infrastructure.repositories;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using service;
 using service.accountservice;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,9 +28,15 @@ if (builder.Environment.IsProduction())
 builder.Services.AddSingleton<PasswordHashRepository>();
 builder.Services.AddSingleton<UserRepository>();
 builder.Services.AddSingleton<AccountService>();
+builder.Services.AddSingleton<ComputerVisionService>();
 
 builder.Services.AddJwtService();
 builder.Services.AddSwaggerGenWithBearerJWT();
+
+builder.Services.Configure<KestrelServerOptions>(options =>
+{
+    options.AllowSynchronousIO = true;
+});
 
 var allowedOrigins = new[] { "http://localhost:4200", "https://localhost:4200" };
 builder.Services.AddCors(options =>

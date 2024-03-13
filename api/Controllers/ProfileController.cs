@@ -3,9 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
-public class Controller : ControllerBase
+public class ProfileController : ControllerBase
 {
+    public ProfileController()
+    {
+        //TODO: Create Profile / Allergen Service, inject here, and implement saving to DB in a repo
+    }
+
     [HttpPost]
     [Route("api/saveAllergens")]
     public void SaveAllergens(int[] allergens)

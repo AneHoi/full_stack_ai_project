@@ -64,4 +64,29 @@ export class WebcamSnapshotComponent implements AfterViewInit {
       .getContext("2d")
       .drawImage(image, 0, 0, this.WIDTH, this.HEIGHT);
   }
+
+  async save() {
+    const imageDataUrl = this.captures[this.captures.length - 1]; // Assuming you want to send the latest captured image
+    try {
+      const blob = await fetch(imageDataUrl).then(res => res.blob());
+      const file = new File([blob], 'image.jpg', { type: 'image/jpeg' });
+
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const response = await fetch('http://localhost:5096/api/analyze', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response.ok) {
+        console.log('Image saved successfully!');
+        // You can add further handling here if needed
+      } else {
+        console.error('Failed to save image.');
+      }
+    } catch (error) {
+      console.error('Error saving image:', error);
+    }
+  }
 }

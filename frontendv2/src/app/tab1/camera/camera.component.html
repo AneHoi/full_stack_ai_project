@@ -8,6 +8,8 @@
 <div class="snap-container">
   <button class="btn btn-primary" *ngIf="!isCaptured" (click)="capture()">Snap Photo</button>
   <button class="btn btn-danger" *ngIf="isCaptured" (click)="removeCurrent()">Take Another</button>
+  <ion-item-divider></ion-item-divider>
+  <button (click)="save()">Analyze image</button>
 
   <div *ngIf="error" class="text-danger mt-4">
     {{ error }}. Please click refresh on stackblitz
