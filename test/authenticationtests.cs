@@ -8,6 +8,7 @@ public class Tests
 {
     private HttpClient _http;
 
+    //running before EVERY test
     [SetUp]
     public void Setup()
     {
@@ -54,6 +55,8 @@ public class Tests
     [Test]
     public async Task LoginTest()
     {
+        //insert another user in SQL
+        
         LoginDto loginDto = new LoginDto
         {
             email = "test@mail",
