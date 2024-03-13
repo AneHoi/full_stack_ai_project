@@ -19,7 +19,9 @@ public static class HttpContextExtentions
         //Exists ONLY for the current request, and destroyed afterwards 
         return httpContext.Items["data"] as SessionData;
     }
-    
+    /**
+     * Getting swagger to work with bearer tokens
+     */
     public static void AddSwaggerGenWithBearerJWT(this IServiceCollection services)
     {
         services.AddSwaggerGen(c =>

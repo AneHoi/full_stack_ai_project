@@ -23,15 +23,27 @@ public class AccountController : ControllerBase
     [Route("/account/login")]
     public ResponseDto Login([FromBody] LoginDto dto)
     {
-        var user = _service.Authenticate(dto.email, dto.password);
-        //Creating a token from the user
-        //The "!" indicates that you are sure nullableString is not null
-        var token = _jwtService.IssueToken(SessionData.FromUser(user!));
-        return new ResponseDto
+        try
         {
-            MessageToClient = "Successfully authenticated",
-            ResponseData = new { token }
-        };
+            var user = _service.Authenticate(dto.email, dto.password);
+            //Creating a token from the user
+            //The "!" indicates that you are sure nullableString is not null
+            var token = _jwtService.IssueToken(SessionData.FromUser(user!));
+            return new ResponseDto
+            {
+                MessageToClient = "Successfully authenticated",
+                ResponseData = new { token }
+            };
+        }
+        catch (Exception e)
+        {
+            return new ResponseDto
+            {
+                MessageToClient = "Successfully authenticated",
+                ResponseData = null
+            };
+        }
+        
     }
 
     [HttpPost]

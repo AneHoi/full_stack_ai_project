@@ -1,52 +1,82 @@
-using api.Controllers;
+using System.Text;
 using api.dtoModels;
-using infrastructure.repositories;
-using Microsoft.Extensions.Logging;
-using Moq;
-using service.accountservice;
+using Newtonsoft.Json;
 
 namespace test;
 
-[TestFixture]
 public class Tests
 {
-    private AccountController _accountController;
-    private Mock<AccountService> _service;
-    private Mock<JwtService> _jwtService;
+    private HttpClient _http;
 
-    private Mock<ILogger<AccountService>> _logger;
-    private Mock<PasswordHashRepository> _passwordHashRepository;
-    private Mock<UserRepository> _userRepository;
+    //running before EVERY test
     [SetUp]
     public void Setup()
     {
-        /*_logger = new Mock<ILogger<AccountService>>(null);
-        _passwordHashRepository = new Mock<PasswordHashRepository>(null);
-        _userRepository = new Mock<UserRepository>(null);
-        *///_service = new Mock<AccountService>(_logger.Object, _userRepository.Object, _passwordHashRepository.Object);
-        _jwtService = new Mock<JwtService>();
-        _service = new Mock<AccountService>();
-        _accountController = new AccountController(_service.Object, _jwtService.Object);
+        _http = new HttpClient();
+        Helper.TriggerRebuild();
     }
 
-    [Test]
-    public void Login()
+
+    [TestCase("tester", 12345678, "test@mail", "StrongPassword")]
+    [TestCase("kenneth", 1237542, "kenneth@mail", "KStrongPassword")]
+    [TestCase("Jonas", 12397654, "jonas@mail", "JStrongPassword")]
+    public async Task RegisterTest(string username, int tlf, string mail, string password)
     {
+        RegisterDto registerDto = new RegisterDto()
+        {
+            username = username,
+            tlfnumber = tlf,
+            email = mail,
+            password = password
+        };
+        // Arrange
+        var json = JsonConvert.SerializeObject(registerDto);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        string baseUri = "http://localhost:5096";
+
+
+        // Act
+        var response = await _http.PostAsync(baseUri + "/account/register", content);
+        
+        // Check if the response is successful
+        response.EnsureSuccessStatusCode();
+        // Deserialize the response content into the expected type
+        ResponseDto responseObject = await response.Content.ReadAsAsync<ResponseDto>();
+
+        //Assert
+        // Check if the deserialized object is of the expected type
+        Assert.IsInstanceOf<ResponseDto>(responseObject);
+        Assert.IsNotNull(response);
+        Assert.AreEqual("Successfully registered", responseObject.MessageToClient);
+    }
+
+
+    [Test]
+    public async Task LoginTest()
+    {
+        //insert another user in SQL
+        
         LoginDto loginDto = new LoginDto
         {
             email = "test@mail",
             password = "strongPassword1234"
         };
-        Console.WriteLine(1);
-        var response = _accountController.Login(loginDto);
-        Console.WriteLine(2);
-        Assert.IsNotNull(response);
-        Console.WriteLine(3);
-        Assert.AreEqual("Successfully authenticated", response.MessageToClient);
-        Console.WriteLine(4);
+        // Arrange
+        var json = JsonConvert.SerializeObject(loginDto);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        string baseUri = "http://localhost:5096";
 
-        // Depending on the structure of your ResponseDto, you may need to adjust this assertion
-        Assert.IsNotNull(response.ResponseData);
-        Assert.IsNotNull(response.ResponseData.ToString());
+
+        // Act
+        var response = await _http.PostAsync(baseUri + "/account/login", content);
+
+        Assert.IsNotNull(response);
+        
+    }
+
+    [TearDownAttribute]
+    public void TearDown()
+    {
+        _http.Dispose();
     }
 }

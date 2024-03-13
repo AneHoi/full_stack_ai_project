@@ -7,6 +7,14 @@ export class AuthGuard {
 
   constructor(private router: Router, private toast: ToastController) { }
 
+  //The token will be stored in the window storrage, so it stays on the user instead of the server
+  setToken(token : string){
+    sessionStorage.setItem("token", token);
+  }
+
+  clearToken() {
+    sessionStorage.removeItem("token");
+  }
   async canActivate() {
     if (sessionStorage.getItem('token')) {
       // logged in so return true
