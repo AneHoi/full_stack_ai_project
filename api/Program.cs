@@ -1,6 +1,7 @@
 using System.Data;
 using api;
 using api.Middleware;
+using ConsoleApp1.JsonFileExtractor;
 using infrastructure;
 using infrastructure.mySqlRepositories;
 using infrastructure.repositories;
@@ -33,6 +34,8 @@ if (builder.Environment.IsProduction())
 builder.Services.AddSingleton(provider => Utilities.MySqlConnectionString);
 
 builder.Services.AddSingleton(provider => new MySQLRepo(provider.GetRequiredService<string>()));
+builder.Services.AddSingleton(provider => new FoodJsonExtractorRepository(provider.GetRequiredService<string>()));
+builder.Services.AddSingleton(provider => new ProductRepo(provider.GetRequiredService<string>()));
 builder.Services.AddSingleton(provider => new UserRepo(provider.GetRequiredService<string>()));
 builder.Services.AddSingleton(provider => new PasswordHashRepo(provider.GetRequiredService<string>()));
 builder.Services.AddSingleton(provider => new AllergenRepo(provider.GetRequiredService<string>()));

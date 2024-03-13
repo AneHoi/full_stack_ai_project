@@ -31,7 +31,7 @@ SELECT LAST_INSERT_ID() as id, @username as username, @tlfnumber as tlfnumber, @
             }
             catch (Exception ex)
             {
-                throw new SqlTypeException(" read balances from group", ex);
+                throw new SqlTypeException(" could not create user", ex);
             }
         }
     }
