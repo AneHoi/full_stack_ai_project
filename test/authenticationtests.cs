@@ -13,7 +13,6 @@ public class Tests
     public void Setup()
     {
         _http = new HttpClient();
-        
         Helper.TriggerRebuild();
     }
 
