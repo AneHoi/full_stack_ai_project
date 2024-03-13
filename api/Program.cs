@@ -1,10 +1,15 @@
+using System.Data;
 using api;
 using api.Middleware;
+using ConsoleApp1.JsonFileExtractor;
 using infrastructure;
+using infrastructure.mySqlRepositories;
 using infrastructure.repositories;
+using MySql.Data.MySqlClient;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using service;
 using service.accountservice;
+using service.allergenService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +23,7 @@ if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString,
         dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
+    
 }
 
 if (builder.Environment.IsProduction())
@@ -25,9 +31,22 @@ if (builder.Environment.IsProduction())
     builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString);
 }
 
+
+// Register the connection string as a singleton service so it can be used in repoes.
+builder.Services.AddSingleton(provider => Utilities.MySqlConnectionString);
+
+builder.Services.AddSingleton(provider => new MySQLRepo(provider.GetRequiredService<string>()));
+builder.Services.AddSingleton(provider => new FoodJsonExtractorRepository(provider.GetRequiredService<string>()));
+builder.Services.AddSingleton(provider => new ProductRepo(provider.GetRequiredService<string>()));
+builder.Services.AddSingleton(provider => new UserRepo(provider.GetRequiredService<string>()));
+builder.Services.AddSingleton(provider => new PasswordHashRepo(provider.GetRequiredService<string>()));
+builder.Services.AddSingleton(provider => new AllergenRepo(provider.GetRequiredService<string>()));
+
 builder.Services.AddSingleton<PasswordHashRepository>();
 builder.Services.AddSingleton<UserRepository>();
+
 builder.Services.AddSingleton<AccountService>();
+builder.Services.AddSingleton<AllergenDbCreatorService>();
 builder.Services.AddSingleton<ComputerVisionService>();
 
 builder.Services.AddJwtService();
@@ -64,6 +83,5 @@ app.MapControllers();
 
 app.UseCors("AllowSpecificOrigins");
 app.UseMiddleware<JwtBearerHandler>();
-
-
+app.UseMiddleware<GlobalExceptionHandler>();
 app.Run();

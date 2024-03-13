@@ -11,4 +11,8 @@ public class Utilities
             Uri.UserInfo.Split(':')[0],
             Uri.UserInfo.Split(':')[1],
             Uri.Port > 0 ? Uri.Port : 5432);
+
+
+    public static readonly string
+        MySqlConnectionString = "Server=127.0.0.1;Port=63306;Database=Blog;Uid=root;Pwd=example;";
 }
