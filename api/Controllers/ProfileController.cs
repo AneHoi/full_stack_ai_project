@@ -1,15 +1,20 @@
+using api.filter;
+using infrastructure.datamodels;
 using Microsoft.AspNetCore.Mvc;
+using service.profileService;
 
 namespace api.Controllers;
 
 [ApiController]
 public class ProfileController : ControllerBase
 {
-    public ProfileController()
+    private readonly ProfileService _profileService;
+    public ProfileController(ProfileService profileService)
     {
-        //TODO: Create Profile / Allergen Service, inject here, and implement saving to DB in a repo
+        _profileService = profileService;
     }
 
+    [RequireAuthentication]
     [HttpPost]
     [Route("api/saveAllergens")]
     public void SaveAllergens(int[] allergens)
@@ -17,9 +22,21 @@ public class ProfileController : ControllerBase
         Console.WriteLine("Allergen[0]: "+allergens[0]);
         Console.WriteLine("Length: "+allergens.Length);
 
-        //TODO
-        //1) Find user id fra Jwt
-        //2) Saml og send til service > repo
-        //3) returner Ok?
+        var userId = HttpContext.GetSessionData().UserId;
+        Console.WriteLine("User ID: "+userId);
+
+        bool success = _profileService.SaveAllergens(allergens, userId);
+        Console.WriteLine("Success: "+success);
+        
+        //1) Find user id fra Jwt //TODO hmmm something seems off. Virker fra swagger, ikke fra frontend
+        //2) Saml og send til service > repo //DONE
+        //3) returner Ok? 
+    }
+
+    [HttpGet]
+    [Route("api/getAllergens")]
+    public IEnumerable<Allergen> GetAllergens()
+    {
+        return _profileService.GetAllergenCategories();
     }
 }

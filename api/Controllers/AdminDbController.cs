@@ -25,12 +25,12 @@ public class AdminDbController : ControllerBase
     public bool CreateAllergenDb()
     {
         //should only be run once pr db..
-        //_service.SaveCategories();
+        _service.SaveCategories();
         
         //creates the allergen db table from json content
-        //_service.SaveAllergens();
+        _service.SaveAllergens();
         
-         _service.SaveProducts();
+         //_service.SaveProducts();
         return true;//todo should be true if succes created 
     }
     

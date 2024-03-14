@@ -9,27 +9,12 @@ import {HttpClient} from "@angular/common/http";
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
-  allergens: Allergen[] = //Probably lidt for hacky?
-    [
-      {id: 1, name: "Celery"},
-      {id: 2, name: "Crustaceans"},
-      {id: 3, name: "Eggs"},
-      {id: 4, name: "Fish"},
-      {id: 5, name: "Gluten"},
-      {id: 6, name: "Lupin"},
-      {id: 7, name: "Milk"},
-      {id: 8, name: "Molluscs"},
-      {id: 9, name: "Mustard"},
-      {id: 10, name: "Nuts"},
-      {id: 11, name: "Peanuts"},
-      {id: 12, name: "Sesame seeds"},
-      {id: 13, name: "Soya"},
-      {id: 14, name: "Sulphites"}
-    ];
+  allergens: Allergen[] = [];
   usersAllergies: number[] = [];
   @ViewChild('select') select: IonSelect | undefined; //Used to open the select as default
 
   constructor(private readonly http: HttpClient) {
+    this.getAllergenCategories();
     //Default checks off all allergens
     this.allergens.forEach((a) => this.usersAllergies.push(a.id))
 
@@ -50,6 +35,11 @@ export class Tab2Page {
     }
   }
 
+  async getAllergenCategories() {
+    const call = this.http.get<Allergen[]>("http://localhost:5096/api/getAllergens");
+    this.allergens = await firstValueFrom(call);
+  }
+
   async saveAllergens() {
     const call = this.http.post<Allergen[]>("http://localhost:5096/api/saveAllergens", this.usersAllergies);
     const response = await firstValueFrom<Allergen[]>(call);
@@ -60,5 +50,5 @@ export class Tab2Page {
 
 export interface Allergen {
   id: number,
-  name: string
+  category_name: string
 }

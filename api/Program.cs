@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using service;
 using service.accountservice;
 using service.allergenService;
+using service.profileService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +49,7 @@ builder.Services.AddSingleton<UserRepository>();
 builder.Services.AddSingleton<AccountService>();
 builder.Services.AddSingleton<AllergenDbCreatorService>();
 builder.Services.AddSingleton<ComputerVisionService>();
+builder.Services.AddSingleton<ProfileService>();
 
 builder.Services.AddJwtService();
 builder.Services.AddSwaggerGenWithBearerJWT();
