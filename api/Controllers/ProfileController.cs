@@ -29,7 +29,7 @@ public class ProfileController : ControllerBase
         Console.WriteLine("Success: "+success);
         
         //1) Find user id fra Jwt //TODO hmmm something seems off. Virker fra swagger, ikke fra frontend
-        //2) Saml og send til service > repo //DONE
+        //2) Saml og send til service > repo //½done. TODO: Tag højde for unticked. Dvs. hvis man fravælger igen skal den fjernes. Lige nu gemmes alle valgte bare.
         //3) returner Ok? 
     }
 
