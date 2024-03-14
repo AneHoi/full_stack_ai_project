@@ -6,6 +6,8 @@ using infrastructure;
 using infrastructure.mySqlRepositories;
 using infrastructure.repositories;
 using MySql.Data.MySqlClient;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using service;
 using service.accountservice;
 using service.allergenService;
 
@@ -45,9 +47,15 @@ builder.Services.AddSingleton<UserRepository>();
 
 builder.Services.AddSingleton<AccountService>();
 builder.Services.AddSingleton<AllergenDbCreatorService>();
+builder.Services.AddSingleton<ComputerVisionService>();
 
 builder.Services.AddJwtService();
 builder.Services.AddSwaggerGenWithBearerJWT();
+
+builder.Services.Configure<KestrelServerOptions>(options =>
+{
+    options.AllowSynchronousIO = true;
+});
 
 var allowedOrigins = new[] { "http://localhost:4200", "https://localhost:4200" };
 builder.Services.AddCors(options =>

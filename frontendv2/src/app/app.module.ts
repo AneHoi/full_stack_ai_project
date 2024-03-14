@@ -10,8 +10,7 @@ import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [AppComponent],
-  //VERY IMPORTANT add the HttpClientModule if you want Ionic to work
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, IonicModule.forRoot({}), HttpClientModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
