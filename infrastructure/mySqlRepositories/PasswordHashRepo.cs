@@ -31,6 +31,7 @@ VALUES (@userId, @hash, @salt, @algorithm)";
             }
             catch (Exception ex)
             {
+                //TODO what balance?
                 throw new SqlTypeException(" read balances from group", ex);
             }
         }
@@ -58,6 +59,7 @@ VALUES (@userId, @hash, @salt, @algorithm)";
             }
             catch (Exception ex)
             {
+                //TODO what ballance?
                 throw new SqlNullValueException(" read balances from group", ex);
             }
         }
