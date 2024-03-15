@@ -8,7 +8,6 @@ namespace service.accountservice;
 
 public class AccountService
 {
-    private readonly ILogger<AccountService> _logger;
     private readonly PasswordHashRepository _passwordHashRepository;
     private readonly UserRepository _userRepository;
     private readonly UserRepo _userRepo;
@@ -16,14 +15,12 @@ public class AccountService
 
     public AccountService(
         UserRepo userRepo,
-        ILogger<AccountService> logger, 
         UserRepository userRepository,
         PasswordHashRepository passwordHashRepository,
         PasswordHashRepo passwordHashRepo)
     {
         _userRepo = userRepo;
         _passwordHashRepo = passwordHashRepo;
-        _logger = logger;
         _userRepository = userRepository;
         _passwordHashRepository = passwordHashRepository;
     }
@@ -48,9 +45,7 @@ public class AccountService
         }
         catch (Exception e)
         {
-            //logs the error instead of sending the exact information to the user.
-            if (_logger != null)
-                _logger.LogError("Authenticate error: {Message}", e);
+            throw new AuthenticationException("could not validate", e);
         }
 
         throw new InvalidCredentialException("Invalid credential!");
@@ -76,6 +71,6 @@ public class AccountService
 
     public object Get(SessionData data)
     {
-        return _userRepository.GetById(data.UserId);
+        return _userRepo.GetById(data.UserId);
     }
 }

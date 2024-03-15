@@ -24,8 +24,8 @@ public class AdminDbController : ControllerBase
     [Route("/allergens/createdb")]
     public bool CreateAllergenDb()
     {
-        //should only be run once pr db..
-        //_service.SaveCategories();
+
+        _service.SaveCategories();
         
         _service.SaveAllergens();
         return true;//todo should be true if succes created 
