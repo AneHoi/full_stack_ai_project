@@ -1,6 +1,7 @@
 ﻿using System.Data.SqlTypes;
 using ConsoleApp1.JsonFileExtractor;
 using Dapper;
+using infrastructure.datamodels;
 using MySql.Data.MySqlClient;
 
 namespace infrastructure.mySqlRepositories;
@@ -95,5 +96,117 @@ SELECT id FROM allergenedb.categories WHERE category_name = @categoryName;";
 
         // If category not found, return -1 or throw an exception based on your requirement
         return -1;
+    }
+
+    public IEnumerable<Allergen> GetAllergenCategories()
+    {
+        using (var connection = new MySqlConnection(_connectionString))
+        {
+            const string sql = @"SELECT * FROM allergenedb.categories;";
+            
+            try
+            {
+                var allergens = new List<Allergen>();
+                
+                connection.Open();
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    var dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        var allergen = new Allergen()
+                        {
+                            id = dataReader.GetInt32("id"),
+                            category_name = dataReader.GetString("category_name")
+                        };
+                        allergens.Add(allergen);
+                    }
+                    dataReader.Close();
+                }
+                connection.Close();
+
+                return allergens;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Something went wrong when getting allergen categories", e);
+            }
+        }
+    }
+
+    public bool SaveAllergens(IEnumerable<int> allergens, int user_id)
+    {
+        using (var connection = new MySqlConnection(_connectionString))
+        {
+            const string sqlClear = @"DELETE FROM allergenedb.user_allergens WHERE user_id=@user_id;";
+            const string sqlInsert = @"INSERT INTO allergenedb.user_allergens (user_id, category_id) VALUES (@user_id, @category_id);";
+            
+            try
+            {
+                connection.Open();
+                using (var command = new MySqlCommand(sqlClear, connection))
+                {
+                    command.Parameters.AddWithValue("@user_id", user_id);
+                    command.ExecuteNonQuery();
+                }
+                
+                int rowsAffected = 0;
+                foreach (var allergen in allergens)
+                {
+                    using (var command = new MySqlCommand(sqlInsert, connection))
+                    {
+                        command.Parameters.AddWithValue("@user_id", user_id);
+                        command.Parameters.AddWithValue("@category_id", allergen);
+                        var row = command.ExecuteNonQuery();
+                        rowsAffected += row;
+                    }
+                }
+                
+                connection.Close();
+                
+                return allergens.Count() == rowsAffected;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Something went wrong when saving your profile's allergens", e);
+            }
+        }
+    }
+
+    public IEnumerable<int> GetUsersAllergens(int userId)
+    {
+        using (var connection = new MySqlConnection(_connectionString))
+        {
+            const string sql = @"SELECT * FROM allergenedb.user_allergens WHERE user_id=@userId;";
+            
+            try
+            {
+                var allergens = new List<int>();
+                
+                connection.Open();
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@userId", userId);
+                    var dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        var userAllergen = new
+                        {
+                            category_id = dataReader.GetInt32("category_id"),
+                        };
+                        
+                        allergens.Add(userAllergen.category_id);
+                    }
+                    dataReader.Close();
+                }
+                connection.Close();
+
+                return allergens;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Something went wrong when getting your allergens", e);
+            }
+        }
     }
 }

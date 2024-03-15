@@ -1,7 +1,4 @@
-﻿using api.dtoModels;
-using ConsoleApp1.JsonFileExtractor;
-using Microsoft.AspNetCore.Mvc;
-using service.accountservice;
+﻿using Microsoft.AspNetCore.Mvc;
 using service.allergenService;
 
 namespace api.Controllers;
@@ -26,9 +23,11 @@ public class AdminDbController : ControllerBase
     {
         //should only be run once pr db..
         _service.SaveCategories();
-        //creates the allergen db table from json content
         
-         //_service.SaveProducts();
+        //creates the allergen db table from json content
+        _service.SaveAllergens();
+        
+        //_service.SaveProducts();
         return true;//todo should be true if succes created 
     }
     
