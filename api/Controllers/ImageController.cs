@@ -1,6 +1,8 @@
 using api.dtoModels;
+using infrastructure.datamodels;
 using Microsoft.AspNetCore.Mvc;
 using service;
+using service.allergenService;
 
 namespace api.Controllers;
 
@@ -8,13 +10,17 @@ namespace api.Controllers;
 public class ImageController : ControllerBase
 {
     private readonly ComputerVisionService _computerVisionService;
+    private readonly UserAllergeneService _userAllergeneService;
 
-    public ImageController(ComputerVisionService computerVisionService)
+    public ImageController(ComputerVisionService computerVisionService,
+        UserAllergeneService userAllergeneService)
     {
         _computerVisionService = computerVisionService;
+        _userAllergeneService = userAllergeneService;
     }
     [HttpPost]
     [Route("api/analyze")]
+    
     public async Task<ImageResultDto> ReadFromImage([FromForm] IFormFile image)
     {
         try
@@ -31,12 +37,16 @@ public class ImageController : ControllerBase
                 await image.CopyToAsync(stream);
             }
             
-            _computerVisionService.MakeRequest(imagePath);
-
+           var result = _computerVisionService.MakeRequest(imagePath);
+           
+           var session = HttpContext.GetSessionData()!;
+            
+           var result1 = _userAllergeneService.isUserAllergicTo(result.Result, session.UserId);
+            
             return new ImageResultDto
             {
-                text = "hej jeg elsker øl",
-                allergenes = new List<string> { "hellominven", "sewibuddy" }
+                text = result.Result,
+                allergenes = result1
             };
         }
         catch (Exception ex)

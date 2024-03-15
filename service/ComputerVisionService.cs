@@ -7,7 +7,7 @@ namespace service;
 
 public class ComputerVisionService
 {
-    public async void MakeRequest(string imagePath)
+    public async Task<string> MakeRequest(string imagePath)
     {
         var client = new HttpClient();
         var queryString = HttpUtility.ParseQueryString(string.Empty);
@@ -31,6 +31,7 @@ public class ComputerVisionService
         // Request body
         byte[] byteData = File.ReadAllBytes(imagePath);
 
+        string resultContent = null;
         using (var content = new ByteArrayContent(byteData))
         {
             content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
@@ -44,9 +45,8 @@ public class ComputerVisionService
             Console.WriteLine("Response: " + responseContent);
             
             var obj = JsonSerializer.Deserialize<ComputerVisionResponseDto>(responseContent);
-            string content = obj.readResult.content;
-            Console.WriteLine("\nContent part: \n" + content);
-            
+            resultContent = obj.readResult.content;
+
             //TODO: Check 'content' for allergens against our DB
         }
         else
@@ -54,5 +54,7 @@ public class ComputerVisionService
             Console.WriteLine("Error: " + response.StatusCode);
             Console.WriteLine("Error: " + response);
         }
+
+        return resultContent;
     }
 }
