@@ -210,7 +210,7 @@ SELECT id FROM allergenedb.categories WHERE category_name = @categoryName;";
         }
     }
 
-    public List<string> recieveIngredients(List<string> ingredientlist, List<int> userIsAllergicTo)
+    public List<string> CheckForAllergy(List<string> ingredientlist, List<int> userIsAllergicTo)
     {
         List<string> categoryId = new List<string>();
         using (var connection = new MySqlConnection(_connectionString))

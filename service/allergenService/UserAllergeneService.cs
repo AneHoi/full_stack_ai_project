@@ -5,6 +5,12 @@ namespace service.allergenService;
 
 public class UserAllergeneService
 {
+    private AllergenRepo _repo;
+    public UserAllergeneService(AllergenRepo repo)
+    {
+        _repo = repo;
+    }
+    
     private AllergenRepo _repository;
 
     private List<string> seperateBySpace(string ingredients)
@@ -18,8 +24,14 @@ public class UserAllergeneService
         return ingredientlist;
     }
 
-    public void isUserAllergicTo()
+    public void isUserAllergicTo(string result, int userId)
     {
+        List<string> strings = seperateBySpace(result);
+
+        var b = _repo.GetUsersAllergens(userId);
         
+
+       var f = _repo.CheckForAllergy(strings, b.ToList());
+       Console.WriteLine(f[0]);
     }
 }
