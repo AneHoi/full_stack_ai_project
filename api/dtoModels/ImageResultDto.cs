@@ -1,4 +1,4 @@
-﻿namespace api.dtoModels;
+namespace api.dtoModels;
 
 public class ImageResultDto
 {

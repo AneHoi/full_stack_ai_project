@@ -1,4 +1,4 @@
-﻿namespace infrastructure.datamodels;
+namespace infrastructure.datamodels;
 
 public class Allergen
 {

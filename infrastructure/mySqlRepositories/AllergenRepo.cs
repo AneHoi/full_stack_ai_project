@@ -98,42 +98,6 @@ SELECT id FROM allergenedb.categories WHERE category_name = @categoryName;";
         return -1;
     }
 
-
-    public List<string> recieveIngredients(List<string> ingredientlist, List<int> userIsAllergicTo)
-    {
-        List<string> categoryId = new List<string>();
-        using (var connection = new MySqlConnection(_connectionString))
-        {
-            try
-            {
-                connection.Open();
-                // Check if ingredients match allergen names
-                foreach (string ingredient in ingredientlist)
-                {
-                    var query = @"SELECT allergen_name 
-                              FROM allergenedb.allergens a
-                              INNER JOIN allergenedb.categories c ON a.category_id = c.id
-                              WHERE allergen_name = @ingredient AND category_name IN @categories";
-                    var matchingAllergens =
-                        connection.Query<string>(query, new { ingredient, categories = userIsAllergicTo });
-
-                    if (matchingAllergens.Any())
-                    {
-                        categoryId.Add(matchingAllergens.ToString());
-                        // Handle allergic reaction
-                        Console.WriteLine($"Allergic reaction detected for ingredient: {ingredient}");
-                    }
-                }
-
-                return categoryId;
-            }
-            catch (Exception e)
-            {
-                throw new SqlNullValueException("Could not find the allergenes", e);
-            }
-        }
-    }
-
     public IEnumerable<Allergen> GetAllergenCategories()
     {
         using (var connection = new MySqlConnection(_connectionString))
@@ -242,6 +206,40 @@ SELECT id FROM allergenedb.categories WHERE category_name = @categoryName;";
             catch (Exception e)
             {
                 throw new Exception("Something went wrong when getting your allergens", e);
+            }
+        }
+    }
+
+    public List<string> recieveIngredients(List<string> ingredientlist, List<int> userIsAllergicTo)
+    {
+        List<string> categoryId = new List<string>();
+        using (var connection = new MySqlConnection(_connectionString))
+        {
+            try
+            {
+                connection.Open();
+                // Check if ingredients match allergen names
+                foreach (string ingredient in ingredientlist)
+                {
+                    var query = @"SELECT allergen_name 
+                              FROM allergenedb.allergens a
+                              INNER JOIN allergenedb.categories c ON a.category_id = c.id
+                              WHERE allergen_name = @ingredient AND category_name IN @categories";
+                    var matchingAllergens = connection.Query<string>(query, new { ingredient, categories = userIsAllergicTo });
+
+                    if (matchingAllergens.Any())
+                    {
+                        categoryId.Add(matchingAllergens.ToString());
+                        // Handle allergic reaction
+                        Console.WriteLine($"Allergic reaction detected for ingredient: {ingredient}");
+                    }
+                }
+
+                return categoryId;
+            }
+            catch (Exception e)
+            {
+                throw new SqlNullValueException("Could not find the allergenes", e);
             }
         }
     }
