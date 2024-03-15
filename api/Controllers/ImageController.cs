@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DefaultNamespace;
+using Microsoft.AspNetCore.Mvc;
 using service;
 
 namespace api.Controllers;
@@ -15,15 +16,10 @@ public class ImageController : ControllerBase
 
     [HttpPost]
     [Route("api/analyze")]
-    public async Task<IActionResult> ReadFromImage([FromForm] IFormFile image)
+    public ImageResultDto ReadFromImage([FromForm] IFormFile image)
     {
         try
         {
-            if (image == null || image.Length == 0)
-            {
-                return BadRequest("No file uploaded.");
-            }
-
             // Get the path to the system's temporary directory
             var tempPath = Path.GetTempPath();
             Console.WriteLine("Path: "+tempPath);
@@ -33,17 +29,21 @@ public class ImageController : ControllerBase
             
             using (var stream = new FileStream(imagePath, FileMode.Create))
             {
-                await image.CopyToAsync(stream);
+                image.CopyToAsync(stream);
             }
             
             _computerVisionService.MakeRequest(imagePath);
 
-            return Ok("Image saved successfully!");
+            return new ImageResultDto
+            {
+                text = "hej jeg elsker øl",
+                allergenes = new List<string> { "hellominven", "sewibuddy" }
+            };
         }
         catch (Exception ex)
         {
             // Handle any errors
-            return StatusCode(500, "Error saving image: " + ex.Message);
+            throw new Exception();
         }
     }
 }

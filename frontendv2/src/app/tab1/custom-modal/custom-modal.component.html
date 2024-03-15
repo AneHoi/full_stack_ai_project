@@ -1,0 +1,11 @@
+<div *ngIf="isOpen" class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="close()">&times;</span>
+    <h2>Analysis Result</h2>
+    <p><strong>Text:</strong> {{ result?.text }}</p>
+    <p><strong>Allergens:</strong></p>
+    <ul>
+      <li *ngFor="let allergen of result?.allergenes">{{ allergen }}</li>
+    </ul>
+  </div>
+</div>
