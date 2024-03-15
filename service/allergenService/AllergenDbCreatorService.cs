@@ -13,11 +13,13 @@ public class AllergenDbCreatorService
     
     private AllergenRepo _allegenRepo;
     private ProductRepo _productRepo;
+    private FoodJsonExtractorRepository _foodRepo;
     
-    public AllergenDbCreatorService(AllergenRepo allergenRepo, ProductRepo productRepo)
+    public AllergenDbCreatorService(AllergenRepo allergenRepo, ProductRepo productRepo, FoodJsonExtractorRepository foodRepo)
     {
         _allegenRepo = allergenRepo;
         _productRepo = productRepo;
+        _foodRepo = foodRepo;
         
         _categories = AllergenJsonReader.ReadAllergenCategoryList(_allergensCategoryJsonPath);
         _allergens = AllergenJsonReader.ReadAllergens(_allergensJsonPath);
@@ -34,6 +36,11 @@ public class AllergenDbCreatorService
         {
             _allegenRepo.CreateAllergens(allergen);
         }
+    }
+
+    public void SaveProducts()
+    {
+        _foodRepo.ExtractNamesAndItems(@"C:\Users\kenni\Downloads\openfoodfacts-products.jsonl\openfoodfacts-products.jsonl");
     }
     
     

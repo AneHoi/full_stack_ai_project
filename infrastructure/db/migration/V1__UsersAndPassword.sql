@@ -21,7 +21,7 @@ CREATE TABLE allergenedb.products (
                                       language VARCHAR(50),
                                       name VARCHAR(100),
                                       productName VARCHAR(100),
-                                      declaration TEXT
+                                      declaration VARCHAR(10380)
 );
 
 CREATE TABLE allergenedb.categories (

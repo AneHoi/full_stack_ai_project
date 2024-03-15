@@ -1,11 +1,22 @@
-﻿using Newtonsoft.Json;
+﻿using System.Data.SqlTypes;
+using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace ConsoleApp1.JsonFileExtractor;
 
 public class FoodJsonExtractorRepository
 {
-    public static void ExtractNamesAndItems(string jsonFilePath)
+    
+    private readonly string _connectionString;
+
+    public FoodJsonExtractorRepository(string connectionString)
+    {
+        _connectionString = connectionString;
+    }
+
+    
+    public void ExtractNamesAndItems(string jsonFilePath)
     {
         int numberOfResults = 0;
         int numberOfAllergens = 0;
@@ -40,8 +51,10 @@ public class FoodJsonExtractorRepository
                         //allergensTraces = obj["traces_hierarchy"],
                     };
                    
-                   products.Add(product);
+                   SaveProductInfo(product);
                    
+                   
+                   /**
                    //used for saving products for each 1000 so we dont run out of ram...
                    if(numberOfResults % 1000 == 0)
                    {
@@ -52,6 +65,7 @@ public class FoodJsonExtractorRepository
                        products.Clear();
                        
                    }
+                   */
                    
                    /**
                    string name = (string)obj["allergens_from_ingredients"];
@@ -90,10 +104,12 @@ public class FoodJsonExtractorRepository
             Console.WriteLine($"An error occurred: {ex.Message}");
         }
         
+        
+        /**
         // Serialize the new products to JSON format
         string json = JsonConvert.SerializeObject(_allegens, Formatting.Indented);
         File.AppendAllText(@"C:\Users\kenni\RiderProjects\ConsoleApp1\ConsoleApp1\test1.json", json);
-
+        */
     }
 
     private void PrintProductInConsole(ProductInfo product)
@@ -132,6 +148,45 @@ public class FoodJsonExtractorRepository
         {
             Console.WriteLine($"Der opstod en fejl under gemning af produkterne: {ex.Message}");
         }
+    }
+    
+    
+    public string SaveProductInfo(ProductInfo productInfo)
+    {
+        using (var connection = new MySqlConnection(_connectionString))
+        {
+            const string sql = @"
+INSERT INTO allergenedb.products (barcode, language, name, productName, declaration)
+VALUES (@barcode, @language, @name, @productName, @declaration);
+SELECT LAST_INSERT_ID() as id;";
+
+            try
+            {
+                connection.Open();
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@barcode", productInfo.barCode);
+                    command.Parameters.AddWithValue("@language", productInfo.language);
+                    command.Parameters.AddWithValue("@name", productInfo.name);
+                    command.Parameters.AddWithValue("@productName", productInfo.productName);
+                    command.Parameters.AddWithValue("@declaration", productInfo.declaration);
+                
+                    
+                    // Execute the INSERT statement
+                    command.ExecuteNonQuery();
+
+                    // Retrieve the last inserted ID
+                    var productId = command.ExecuteScalar();
+                    return productId.ToString(); // Return the ID of the newly inserted product
+                }
+            }
+            catch (Exception ex)
+            { 
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        return null;
     }
 }
 

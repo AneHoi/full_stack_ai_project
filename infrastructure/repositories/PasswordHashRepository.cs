@@ -24,7 +24,9 @@ public class PasswordHashRepository
          */
         public PasswordHash GetByEmail(string email)
         {
-            const string sql = $@"
+            try
+            {
+                const string sql = $@"
             SELECT 
                 user_id as {nameof(PasswordHash.UserId)},
                 hash as {nameof(PasswordHash.Hash)},
@@ -34,8 +36,14 @@ public class PasswordHashRepository
             JOIN allergenedb.users ON allergenedb.password_hash.user_id = users.id
             WHERE email = @email;
         ";
-            using var connection = _dataSource.OpenConnection();
-            return connection.QuerySingle<PasswordHash>(sql, new { email });
+                using var connection = _dataSource.OpenConnection();
+                return connection.QuerySingle<PasswordHash>(sql, new { email });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("error here");
+                return null;
+            }
         }
 
         public void Create(int userId, string hash, string salt, string algorithm)

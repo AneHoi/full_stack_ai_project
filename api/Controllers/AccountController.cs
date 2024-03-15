@@ -23,21 +23,34 @@ public class AccountController : ControllerBase
     [Route("/account/login")]
     public ResponseDto Login([FromBody] LoginDto dto)
     {
-        var user = _service.Authenticate(dto.email, dto.password);
-        //Creating a token from the user
-        //The "!" indicates that you are sure nullableString is not null
-        var token = _jwtService.IssueToken(SessionData.FromUser(user!));
-        return new ResponseDto
+        try
         {
-            MessageToClient = "Successfully authenticated",
-            ResponseData = new { token }
-        };
+            var user = _service.Authenticate(dto.email, dto.password);
+            //Creating a token from the user
+            //The "!" indicates that you are sure nullableString is not null
+            var token = _jwtService.IssueToken(SessionData.FromUser(user!));
+            return new ResponseDto
+            {
+                MessageToClient = "Successfully authenticated",
+                ResponseData = new { token }
+            };
+        }
+        catch (Exception e)
+        {
+            return new ResponseDto
+            {
+                MessageToClient = "Successfully authenticated",
+                ResponseData = null
+            };
+        }
+        
     }
 
     [HttpPost]
     [Route("/account/register")]
     public ResponseDto Register([FromBody] RegisterDto dto)
     {
+        //todo grineren med en lille hilsen, men dårligt at printe et password i console, elller bare user info generelt. 
         Console.WriteLine("Hi Im: \t\t" + dto.username + "\nmy number:\t" + dto.tlfnumber.ToString() + "\nmy email:\t" +
                           dto.email + "\nPassword:\t" + dto.password);
         var user = _service.Register(dto.username, dto.tlfnumber, dto.email, dto.password);
