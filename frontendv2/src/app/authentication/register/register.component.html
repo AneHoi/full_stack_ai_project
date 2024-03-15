@@ -1,18 +1,22 @@
 
 <ion-content>
+  <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+    <ion-card>
   <section class="parentdiv">
     <div class="childdiv">
-      <ion-input label="Username" [formControl]="createNewUserForm.controls.username" label-placement="floating" placeholder="Username"></ion-input>
+      <ion-input label="Username" fill="outline" [formControl]="createNewUserForm.controls.username" label-placement="floating" placeholder="Username"></ion-input>
       <br />
-      <ion-input label="TlfNumber" [formControl]="createNewUserForm.controls.tlfnumber" label-placement="floating" placeholder="Telephone number"></ion-input>
+      <ion-input label="TlfNumber" fill="outline" [formControl]="createNewUserForm.controls.tlfnumber" label-placement="floating" placeholder="Telephone number"></ion-input>
       <br />
-      <ion-input label="Email" [formControl]="createNewUserForm.controls.email" label-placement="floating" placeholder="Email@example.com"></ion-input>
+      <ion-input label="Email" fill="outline" [formControl]="createNewUserForm.controls.email" label-placement="floating" placeholder="Email@example.com"></ion-input>
       <br />
-      <ion-input label="Password" [formControl]="createNewUserForm.controls.password" label-placement="floating" type="password" placeholder="Password"></ion-input>
+      <ion-input label="Password" fill="outline" [formControl]="createNewUserForm.controls.password" label-placement="floating" type="password" placeholder="Password"></ion-input>
       <br />
-      <ion-input label="Confirm Password" [formControl]="createNewUserForm.controls.repeatPassword" label-placement="floating" type="password" placeholder="Confirm Password"></ion-input>
+      <ion-input label="Confirm Password" fill="outline" [formControl]="createNewUserForm.controls.repeatPassword" label-placement="floating" type="password" placeholder="Confirm Password"></ion-input>
       <br />
       <ion-button routerLink="../home" [disabled]="createNewUserForm.invalid" (click)="submit()">Register</ion-button>
     </div>
   </section>
+    </ion-card>
+  </div>
 </ion-content>

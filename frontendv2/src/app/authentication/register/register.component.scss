@@ -1,14 +1,8 @@
 
-ion-input{
-  background-color: #00B0FF;
-  text-align: center;
-  align-items: center;
-  border-radius: 25px;
-}
 ion-button{
-  --background: #1967D2;
+  --background: rgb(25, 103, 210);
   --border-radius: 25px;
-  --background-hover: #134a9f;
+  --background-hover: rgb(24, 192, 186);
 }
 div{
   /*Center elements inside the div*/
@@ -16,12 +10,14 @@ div{
 }
 .parentdiv{
   height: 75%;
+  width: 500px;
   align-items: center;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .childdiv{
+  padding: 20px;
   width: 50%;
   margin: auto;
 }
