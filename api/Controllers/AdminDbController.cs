@@ -30,7 +30,7 @@ public class AdminDbController : ControllerBase
         //creates the allergen db table from json content
         _service.SaveAllergens();
         
-         //_service.SaveProducts();
+        //_service.SaveProducts();
         return true;//todo should be true if succes created 
     }
     
