@@ -21,4 +21,9 @@ public class ProfileService
     {
         return _allergenRepo.SaveAllergens(allergens, user_id);
     }
+
+    public IEnumerable<int> GetUsersAllergens(int userId)
+    {
+        return _allergenRepo.GetUsersAllergens(userId);
+    }
 }

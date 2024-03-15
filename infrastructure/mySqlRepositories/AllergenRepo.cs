@@ -112,7 +112,6 @@ SELECT id FROM allergenedb.categories WHERE category_name = @categoryName;";
                 using (var command = new MySqlCommand(sql, connection))
                 {
                     var dataReader = command.ExecuteReader();
-                    int i = 0;
                     while (dataReader.Read())
                     {
                         var allergen = new Allergen()
@@ -121,7 +120,6 @@ SELECT id FROM allergenedb.categories WHERE category_name = @categoryName;";
                             category_name = dataReader.GetString("category_name")
                         };
                         allergens.Add(allergen);
-                        i++;
                     }
                     dataReader.Close();
                 }
@@ -171,6 +169,43 @@ SELECT id FROM allergenedb.categories WHERE category_name = @categoryName;";
             catch (Exception e)
             {
                 throw new Exception("Something went wrong when saving your profile's allergens", e);
+            }
+        }
+    }
+
+    public IEnumerable<int> GetUsersAllergens(int userId)
+    {
+        using (var connection = new MySqlConnection(_connectionString))
+        {
+            const string sql = @"SELECT * FROM allergenedb.user_allergens WHERE user_id=@userId;";
+            
+            try
+            {
+                var allergens = new List<int>();
+                
+                connection.Open();
+                using (var command = new MySqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@userId", userId);
+                    var dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        var userAllergen = new
+                        {
+                            category_id = dataReader.GetInt32("category_id"),
+                        };
+                        
+                        allergens.Add(userAllergen.category_id);
+                    }
+                    dataReader.Close();
+                }
+                connection.Close();
+
+                return allergens;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Something went wrong when getting your allergens", e);
             }
         }
     }

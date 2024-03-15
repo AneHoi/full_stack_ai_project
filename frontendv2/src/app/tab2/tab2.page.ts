@@ -14,6 +14,8 @@ export class Tab2Page {
 
   constructor(private readonly http: HttpClient) {
     this.getAllergenCategories();
+    this.getUsersAllergens();
+
     //Default checks off all allergens
     this.allergens.forEach((a) => this.usersAllergies.push(a.id))
 
@@ -29,6 +31,11 @@ export class Tab2Page {
   async getAllergenCategories() {
     const call = this.http.get<Allergen[]>("http://localhost:5096/api/getAllergens");
     this.allergens = await firstValueFrom(call);
+  }
+
+  async getUsersAllergens() {
+    const call = this.http.get<number[]>("http://localhost:5096/api/getUsersAllergens");
+    this.usersAllergies = await firstValueFrom(call);
   }
 
   async saveAllergens() {

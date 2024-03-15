@@ -28,9 +28,7 @@ public class ProfileController : ControllerBase
         bool success = _profileService.SaveAllergens(allergens, userId);
         Console.WriteLine("Success: "+success);
         
-        //1) Find user id fra Jwt //TODO hmmm something seems off. Virker fra swagger, ikke fra frontend
-        //2) Saml og send til service > repo //½done. TODO: Tag højde for unticked. Dvs. hvis man fravælger igen skal den fjernes. Lige nu gemmes alle valgte bare.
-        //3) returner Ok? 
+        //TODO send et response til frontend?
     }
 
     [HttpGet]
@@ -38,5 +36,14 @@ public class ProfileController : ControllerBase
     public IEnumerable<Allergen> GetAllergens()
     {
         return _profileService.GetAllergenCategories();
+    }
+
+    [HttpGet]
+    [Route("api/getUsersAllergens")]
+    public IEnumerable<int> GetUsersAllergens()
+    {
+        var userId = HttpContext.GetSessionData().UserId;
+
+        return _profileService.GetUsersAllergens(userId);
     }
 }
