@@ -1,3 +1,6 @@
+<app-custom-modal [result]="result" [isOpen]="isModalOpen" (closeModal)="closeModal()"></app-custom-modal>
+
+
 <div class="video-container" *ngIf="!error">
   <video [class.show]="!isCaptured" [class.hide]="isCaptured" #video id="video" [width]="WIDTH" [height]="HEIGHT"
          autoplay></video>

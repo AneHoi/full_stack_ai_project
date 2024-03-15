@@ -1,4 +1,5 @@
-﻿using api.dtoModels;
+﻿using DefaultNamespace;
+using api.dtoModels;
 using Microsoft.AspNetCore.Mvc;
 using service;
 
@@ -25,12 +26,12 @@ public class ImageController : ControllerBase
 
             // Save the uploaded file to the temporary directory
             var imagePath = Path.Combine(tempPath, image.FileName);
-
+            
             using (var stream = new FileStream(imagePath, FileMode.Create))
             {
                 image.CopyToAsync(stream);
             }
-
+            
             _computerVisionService.MakeRequest(imagePath);
 
             return new ImageResultDto
@@ -44,4 +45,5 @@ public class ImageController : ControllerBase
             // Handle any errors
             throw new Exception();
         }
-    }}
+    }
+}
