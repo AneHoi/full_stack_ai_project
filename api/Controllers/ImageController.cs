@@ -41,12 +41,12 @@ public class ImageController : ControllerBase
            
            var session = HttpContext.GetSessionData()!;
             
-            _userAllergeneService.isUserAllergicTo(result.Result, session.UserId);
+           var result1 = _userAllergeneService.isUserAllergicTo(result.Result, session.UserId);
             
             return new ImageResultDto
             {
-                text = "hej jeg elsker øl",
-                allergenes = new List<string> { "hellominven", "sewibuddy" }
+                text = result.Result,
+                allergenes = result1
             };
         }
         catch (Exception ex)
