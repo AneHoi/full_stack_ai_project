@@ -1,4 +1,4 @@
-﻿using DefaultNamespace;
+using api.dtoModels;
 using Microsoft.AspNetCore.Mvc;
 using service;
 
@@ -13,10 +13,9 @@ public class ImageController : ControllerBase
     {
         _computerVisionService = computerVisionService;
     }
-
     [HttpPost]
     [Route("api/analyze")]
-    public ImageResultDto ReadFromImage([FromForm] IFormFile image)
+    public async Task<ImageResultDto> ReadFromImage([FromForm] IFormFile image)
     {
         try
         {
@@ -29,7 +28,7 @@ public class ImageController : ControllerBase
             
             using (var stream = new FileStream(imagePath, FileMode.Create))
             {
-                image.CopyToAsync(stream);
+                await image.CopyToAsync(stream);
             }
             
             _computerVisionService.MakeRequest(imagePath);
