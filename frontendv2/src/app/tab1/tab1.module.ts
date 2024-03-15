@@ -7,6 +7,7 @@ import { ExploreContainerComponentModule } from '../explore-container/explore-co
 
 import { Tab1PageRoutingModule } from './tab1-routing.module';
 import {WebcamSnapshotComponent} from "./camera/camera.component";
+import {CustomModalComponent} from "./custom-modal/custom-modal.component";
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import {WebcamSnapshotComponent} from "./camera/camera.component";
     ExploreContainerComponentModule,
     Tab1PageRoutingModule
   ],
-  declarations: [Tab1Page, WebcamSnapshotComponent]
+    declarations: [Tab1Page, WebcamSnapshotComponent, CustomModalComponent]
 })
 export class Tab1PageModule {}
