@@ -241,7 +241,6 @@ SELECT id FROM allergenedb.categories WHERE category_name = @categoryName;";
             {
                 throw new SqlNullValueException("Could not find the allergenes", e);
             }
-            
         }
     }
 }
