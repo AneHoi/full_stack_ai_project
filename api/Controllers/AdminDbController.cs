@@ -1,7 +1,4 @@
-﻿using api.dtoModels;
-using ConsoleApp1.JsonFileExtractor;
-using Microsoft.AspNetCore.Mvc;
-using service.accountservice;
+﻿using Microsoft.AspNetCore.Mvc;
 using service.allergenService;
 
 namespace api.Controllers;
