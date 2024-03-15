@@ -140,16 +140,22 @@ SELECT id FROM allergenedb.categories WHERE category_name = @categoryName;";
     {
         using (var connection = new MySqlConnection(_connectionString))
         {
-            const string sql = @"INSERT INTO allergenedb.user_allergens (user_id, category_id) VALUES (@user_id, @category_id);";
+            const string sqlClear = @"DELETE FROM allergenedb.user_allergens WHERE user_id=@user_id;";
+            const string sqlInsert = @"INSERT INTO allergenedb.user_allergens (user_id, category_id) VALUES (@user_id, @category_id);";
             
             try
             {
-                int rowsAffected = 0;
-                
                 connection.Open();
+                using (var command = new MySqlCommand(sqlClear, connection))
+                {
+                    command.Parameters.AddWithValue("@user_id", user_id);
+                    command.ExecuteNonQuery();
+                }
+                
+                int rowsAffected = 0;
                 foreach (var allergen in allergens)
                 {
-                    using (var command = new MySqlCommand(sql, connection))
+                    using (var command = new MySqlCommand(sqlInsert, connection))
                     {
                         command.Parameters.AddWithValue("@user_id", user_id);
                         command.Parameters.AddWithValue("@category_id", allergen);

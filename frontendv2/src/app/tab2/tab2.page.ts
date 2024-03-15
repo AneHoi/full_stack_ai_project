@@ -11,7 +11,6 @@ import {HttpClient} from "@angular/common/http";
 export class Tab2Page {
   allergens: Allergen[] = [];
   usersAllergies: number[] = [];
-  @ViewChild('select') select: IonSelect | undefined; //Used to open the select as default
 
   constructor(private readonly http: HttpClient) {
     this.getAllergenCategories();
@@ -19,14 +18,6 @@ export class Tab2Page {
     this.allergens.forEach((a) => this.usersAllergies.push(a.id))
 
     //Make a method to get the users' specific allergies and overwrite usersAllergies list
-  }
-
-  ngAfterViewInit() {
-    // Open the ion-select element after a short delay
-    setTimeout(() => {
-      // @ts-ignore
-      this.select.open();
-    }, 100);
   }
 
   handleUserSelection(event: CustomEvent) {

@@ -8,7 +8,7 @@
 
 <ion-content [fullscreen]="false">
   <ion-item class="ion-padding">
-    <ion-select #select [value]="usersAllergies" (ionChange)="handleUserSelection($event)"
+    <ion-select [value]="usersAllergies" (ionChange)="handleUserSelection($event)"
                 multiple="true" placeholder="Allergies" cancelText="Cancel" okText="Select">
       <div slot="label">Allergens</div>
       <ion-select-option *ngFor="let allergy of allergens" [value]="allergy.id">{{allergy.category_name}}</ion-select-option>
