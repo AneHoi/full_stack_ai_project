@@ -51,9 +51,10 @@ export class LoginComponent  implements OnInit {
     try {
       const observable = this.http.post<ResponseDto<{
         token: string
-      }>>(environment.baseURL + '/account/login', this.loginForm.getRawValue())
+      }>>(environment.baseURL + '/account/login', this.loginForm.getRawValue());
       const response = await firstValueFrom(observable);
       this.tokenService.setToken(response.responseData!.token)
+      console.log("your token " + response.responseData!.token)
 
       const toast = await this.toastcontroller.create({
         message: 'Login was sucessfull',

@@ -1,7 +1,7 @@
-namespace infrastructure.datamodels;
+﻿namespace infrastructure.datamodels;
 
 public class Allergen
 {
-    public int category_id { get; set; }
-    public string allergen_name { get; set; }
+    public int id { get; set; }
+    public string category_name { get; set; }
 }

@@ -1,13 +1,14 @@
 import {NgModule} from '@angular/core';
 import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
-import {AuthGuard} from "../services/AuthGuard";
 import {LoginComponent} from "./authentication/login/login.component";
 import { RegisterComponent } from './authentication/register/register.component';
+import {AuthGuard} from "../services/AuthGuard";
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
+    canActivate: [AuthGuard]
   },
   //VERY IMPORTANT remember to add the children here. load the components.
   {
