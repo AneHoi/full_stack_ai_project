@@ -16,7 +16,7 @@ public class ImageController : ControllerBase
     }
     [HttpPost]
     [Route("api/analyze")]
-    public ImageResultDto ReadFromImage([FromForm] IFormFile image)
+    public async Task<ImageResultDto> ReadFromImage([FromForm] IFormFile image)
     {
         try
         {
@@ -29,7 +29,7 @@ public class ImageController : ControllerBase
             
             using (var stream = new FileStream(imagePath, FileMode.Create))
             {
-                image.CopyToAsync(stream);
+                await image.CopyToAsync(stream);
             }
             
             _computerVisionService.MakeRequest(imagePath);
