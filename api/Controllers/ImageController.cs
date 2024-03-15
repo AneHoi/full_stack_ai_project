@@ -1,4 +1,3 @@
-﻿using DefaultNamespace;
 using api.dtoModels;
 using Microsoft.AspNetCore.Mvc;
 using service;
