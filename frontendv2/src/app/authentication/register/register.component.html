@@ -1,8 +1,11 @@
 
 <ion-content>
-  <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+  <div class="bigbox">
     <ion-card>
-  <section class="parentdiv">
+      <ion-button class="allignLeft" routerLink="/login">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+      <section class="parentdiv">
     <div class="childdiv">
       <ion-input label="Username" fill="outline" [formControl]="createNewUserForm.controls.username" label-placement="floating" placeholder="Username"></ion-input>
       <br />
