@@ -19,16 +19,9 @@ public class ProfileController : ControllerBase
     [Route("api/saveAllergens")]
     public void SaveAllergens(int[] allergens)
     {
-        Console.WriteLine("Allergen[0]: "+allergens[0]);
-        Console.WriteLine("Length: "+allergens.Length);
-
         var userId = HttpContext.GetSessionData().UserId;
-        Console.WriteLine("User ID: "+userId);
 
         bool success = _profileService.SaveAllergens(allergens, userId);
-        Console.WriteLine("Success: "+success);
-        
-        //TODO send et response til frontend?
     }
 
     [HttpGet]

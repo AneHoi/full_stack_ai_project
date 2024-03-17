@@ -8,6 +8,7 @@ import { ExploreContainerComponentModule } from '../explore-container/explore-co
 import { Tab2PageRoutingModule } from './tab2-routing.module';
 import {AuthHttpInterceptor} from "../../interceptors/auth-http-interceptor";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {TypeaheadComponent} from "./typeahead/typeahead.component";
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import {HTTP_INTERCEPTORS} from "@angular/common/http";
     ExploreContainerComponentModule,
     Tab2PageRoutingModule
   ],
-  declarations: [Tab2Page]
+  declarations: [Tab2Page, TypeaheadComponent]
 })
 export class Tab2PageModule {}

@@ -6,15 +6,26 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="false">
-  <ion-item class="ion-padding">
-    <ion-select [value]="usersAllergies" (ionChange)="handleUserSelection($event)"
-                multiple="true" placeholder="Allergies" cancelText="Cancel" okText="Select">
-      <div slot="label">Allergens</div>
-      <ion-select-option *ngFor="let allergy of allergens" [value]="allergy.id">{{allergy.category_name}}</ion-select-option>
-    </ion-select>
-  </ion-item>
+
+<ion-content color="light">
+  <ion-list [inset]="true">
+    <ion-item id="allergens" [button]="true" [detail]="false">
+      <ion-label slot="start">Allergens</ion-label>
+      <div slot="end">{{ selectedAllergensText }}</div>
+    </ion-item>
+  </ion-list>
+
   <div class="parent">
     <ion-button class="child" (click)="saveAllergens()">Save</ion-button>
   </div>
 </ion-content>
+
+<ion-modal trigger="allergens" #allergenModal>
+  <ng-template>
+    <app-typeahead class="ion-page"
+                   [items]="allergens"
+                   [selectedItems]="usersAllergies"
+                   (selectionChange)="allergenSelectionChanged($event, allergenModal)"
+                   (selectionCancel)="allergenModal.dismiss()"></app-typeahead>
+  </ng-template>
+</ion-modal>
