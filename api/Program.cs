@@ -47,6 +47,7 @@ builder.Services.AddSingleton<PasswordHashRepository>();
 builder.Services.AddSingleton<UserRepository>();
 
 builder.Services.AddSingleton<AccountService>();
+builder.Services.AddSingleton<UserAllergeneService>();
 builder.Services.AddSingleton<AllergenDbCreatorService>();
 builder.Services.AddSingleton<ComputerVisionService>();
 builder.Services.AddSingleton<ProfileService>();

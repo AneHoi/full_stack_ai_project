@@ -210,7 +210,7 @@ SELECT id FROM allergenedb.categories WHERE category_name = @categoryName;";
         }
     }
 
-    public List<string> recieveIngredients(List<string> ingredientlist, List<int> userIsAllergicTo)
+    public List<string> CheckForAllergy(List<string> ingredientlist, List<int> userIsAllergicTo)
     {
         List<string> categoryId = new List<string>();
         using (var connection = new MySqlConnection(_connectionString))
@@ -221,15 +221,20 @@ SELECT id FROM allergenedb.categories WHERE category_name = @categoryName;";
                 // Check if ingredients match allergen names
                 foreach (string ingredient in ingredientlist)
                 {
-                    var query = @"SELECT allergen_name 
-                              FROM allergenedb.allergens a
-                              INNER JOIN allergenedb.categories c ON a.category_id = c.id
-                              WHERE allergen_name = @ingredient AND category_name IN @categories";
+                    var query =  @"SELECT allergen_name 
+              FROM allergenedb.allergens a
+              INNER JOIN allergenedb.categories c ON a.category_id = c.id
+              WHERE allergen_name = @ingredient";
                     var matchingAllergens = connection.Query<string>(query, new { ingredient, categories = userIsAllergicTo });
 
                     if (matchingAllergens.Any())
                     {
-                        categoryId.Add(matchingAllergens.ToString());
+                        foreach (var allergen in matchingAllergens)
+                        {
+                            categoryId.Add(allergen);
+                            // Handle allergic reaction
+                            Console.WriteLine($"Allergic reaction detected for ingredient: {ingredient}");
+                        }
                         // Handle allergic reaction
                         Console.WriteLine($"Allergic reaction detected for ingredient: {ingredient}");
                     }
