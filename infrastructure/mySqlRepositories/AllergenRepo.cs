@@ -224,7 +224,7 @@ SELECT id FROM allergenedb.categories WHERE category_name = @categoryName;";
                     var query =  @"SELECT allergen_name 
               FROM allergenedb.allergens a
               INNER JOIN allergenedb.categories c ON a.category_id = c.id
-              WHERE allergen_name = @ingredient";
+              WHERE allergen_name = @ingredient AND c.id IN @userIsAllergicTo";
                     var matchingAllergens = connection.Query<string>(query, new { ingredient, categories = userIsAllergicTo });
 
                     if (matchingAllergens.Any())
