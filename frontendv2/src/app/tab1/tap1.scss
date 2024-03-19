@@ -1,0 +1,43 @@
+
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: rgba(241, 241, 241, 0);
+}
+
+.snap-container {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.list-unstyled {
+  list-style: none;
+}
+
+.list-unstyled li {
+  display: inline-block;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+/*
+This display: block makes the camera go to the left side of the screen
+.show {
+  display: block;
+}
+*/
+
+.hide {
+  display: none;
+}
+
+//turn the item to mirror movement
+.flip {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+//center everything inside the container
+.video-container {
+  flex-wrap: wrap;
+  text-align: center;
+}

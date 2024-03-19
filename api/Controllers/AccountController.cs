@@ -50,9 +50,6 @@ public class AccountController : ControllerBase
     [Route("/account/register")]
     public ResponseDto Register([FromBody] RegisterDto dto)
     {
-        //todo grineren med en lille hilsen, men dårligt at printe et password i console, elller bare user info generelt. 
-        Console.WriteLine("Hi Im: \t\t" + dto.username + "\nmy number:\t" + dto.tlfnumber.ToString() + "\nmy email:\t" +
-                          dto.email + "\nPassword:\t" + dto.password);
         var user = _service.Register(dto.username, dto.tlfnumber, dto.email, dto.password);
         return new ResponseDto
         {

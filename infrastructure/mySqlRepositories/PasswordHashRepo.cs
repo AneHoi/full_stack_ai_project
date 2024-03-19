@@ -31,8 +31,7 @@ VALUES (@userId, @hash, @salt, @algorithm)";
             }
             catch (Exception ex)
             {
-                //TODO what balance?
-                throw new SqlTypeException(" read balances from group", ex);
+                throw new SqlTypeException("Could not create user", ex);
             }
         }
     }
@@ -59,8 +58,7 @@ VALUES (@userId, @hash, @salt, @algorithm)";
             }
             catch (Exception ex)
             {
-                //TODO what ballance?
-                throw new SqlNullValueException(" read balances from group", ex);
+                throw new SqlNullValueException("Could not find hash, from userEmail", ex);
             }
         }
     }
