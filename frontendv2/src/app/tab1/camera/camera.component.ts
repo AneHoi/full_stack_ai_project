@@ -126,5 +126,12 @@ export class WebcamSnapshotComponent implements AfterViewInit {
 }
 export interface ResultDto{
   text: string,
-  allergenes: string[];
+  allergenes: AllergenDto[];
+
+}
+export interface AllergenDto{
+  allergen_name: string,
+  category_name: string,
+  id: number,
+
 }

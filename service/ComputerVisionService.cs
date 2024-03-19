@@ -42,8 +42,7 @@ public class ComputerVisionService
         if (response.IsSuccessStatusCode)
         {
             string responseContent = await response.Content.ReadAsStringAsync();
-            Console.WriteLine("Response: " + responseContent);
-            
+
             var obj = JsonSerializer.Deserialize<ComputerVisionResponseDto>(responseContent);
             resultContent = obj.readResult.content;
 
