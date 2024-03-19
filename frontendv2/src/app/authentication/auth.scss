@@ -1,0 +1,39 @@
+
+ion-button {
+  --background: rgb(25, 103, 210);
+  --border-radius: 25px;
+  --background-hover: rgb(24, 192, 186);
+}
+
+div {
+  /*Center elements inside the div*/
+  //text-align: center;
+}
+
+.parentdiv {
+  height: 75%;
+  width: 500px;
+  align-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.childdiv {
+  padding: 20px;
+  width: 50%;
+  margin: auto;
+  text-align: center;
+}
+
+.allignLeft {
+  align-self: start;
+  margin-left: 10px;
+}
+
+.bigbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}

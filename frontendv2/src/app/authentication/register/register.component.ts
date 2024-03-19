@@ -11,7 +11,7 @@ import {UserHandler} from "../userhandler";
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
+  styleUrls: ['../auth.scss'],
 })
 export class RegisterComponent implements OnInit {
   currentUser: User | undefined;

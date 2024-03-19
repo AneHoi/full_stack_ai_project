@@ -13,8 +13,7 @@ public class ComputerVisionService
         var queryString = HttpUtility.ParseQueryString(string.Empty);
         
         // Request headers
-        client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "b918311834b84b71aba458cf5d43830d");
-        //TODO: Create environment variable for the key ^^
+        client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key",Environment.GetEnvironmentVariable("headerkey"));
 
         // Request parameters
         queryString["features"] = "read";
