@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonSelect} from '@ionic/angular';
+import {IonModal} from '@ionic/angular';
 import {firstValueFrom} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 
@@ -9,24 +9,16 @@ import {HttpClient} from "@angular/common/http";
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
+  @ViewChild('modal', {static: true}) modal!: IonModal;
   allergens: Allergen[] = [];
   usersAllergies: number[] = [];
+  selectedAllergensText: string = '0 Allergens';
 
   constructor(private readonly http: HttpClient) {
     this.getAllergenCategories();
     this.getUsersAllergens();
-
-    //Default checks off all allergens
-    this.allergens.forEach((a) => this.usersAllergies.push(a.id))
-
-    //Make a method to get the users' specific allergies and overwrite usersAllergies list
   }
 
-  handleUserSelection(event: CustomEvent) {
-    if (event.detail.value !== undefined) {
-      this.usersAllergies = event.detail.value
-    }
-  }
 
   async getAllergenCategories() {
     const call = this.http.get<Allergen[]>("http://localhost:5096/api/getAllergens");
@@ -36,6 +28,7 @@ export class Tab2Page {
   async getUsersAllergens() {
     const call = this.http.get<number[]>("http://localhost:5096/api/getUsersAllergens");
     this.usersAllergies = await firstValueFrom(call);
+    this.updateSelectedAllergensText();
   }
 
   async saveAllergens() {
@@ -43,6 +36,22 @@ export class Tab2Page {
     const response = await firstValueFrom<Allergen[]>(call);
 
     //TODO Handle response (show a toast & redirect?)
+  }
+
+  allergenSelectionChanged(allergens: number[], modal: IonModal) {
+    this.usersAllergies = allergens;
+    this.updateSelectedAllergensText();
+    modal.dismiss();
+  }
+
+  private updateSelectedAllergensText() {
+    const selectedAllergens = this.allergens.filter(allergen => this.usersAllergies.includes(allergen.id));
+
+    if (selectedAllergens.length === 0) {
+      this.selectedAllergensText = '0 Allergens';
+    } else {
+      this.selectedAllergensText = selectedAllergens.map(allergen => allergen.category_name).join(', ');
+    }
   }
 }
 
