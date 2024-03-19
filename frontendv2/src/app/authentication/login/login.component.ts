@@ -7,11 +7,12 @@ import {environment} from "../../../environments/environment.prod";
 import {firstValueFrom, Subscription} from "rxjs";
 import {ToastController} from "@ionic/angular";
 import {UserHandler} from "../userhandler";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  styleUrls: ['../auth.scss'],
 })
 export class LoginComponent  implements OnInit {
   currentUser: User | undefined;
@@ -29,7 +30,7 @@ export class LoginComponent  implements OnInit {
   private subscription: Subscription;
   dynamicLogInOutText: string = 'Login';
 
-  constructor(private tokenService: AuthGuard, private userHandler: UserHandler, public http: HttpClient, public toastcontroller: ToastController) {
+  constructor(public router: Router, private tokenService: AuthGuard, private userHandler: UserHandler, public http: HttpClient, public toastcontroller: ToastController) {
     this.subscription = this.userHandler.logInOutValue$.subscribe((value) => {
       this.dynamicLogInOutText = value;
     })
@@ -62,6 +63,9 @@ export class LoginComponent  implements OnInit {
         color: "success"
       })
       toast.present();
+
+      //navigation link.
+      this.router.navigate(['/..']);
     } catch (e) {
     }
     //Setting the current user.

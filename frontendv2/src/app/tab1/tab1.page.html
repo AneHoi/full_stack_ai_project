@@ -3,6 +3,8 @@
     <ion-title>
       Scan a product 📷
     </ion-title>
+    <ion-button slot="end" (click)="loginoutUser()" routerLink="/login">{{loginOut}}</ion-button>
+
   </ion-toolbar>
 </ion-header>
 
@@ -12,6 +14,7 @@
       <ion-title size="large">Tab 1</ion-title>
     </ion-toolbar>
   </ion-header>
-
+<div>
   <app-webcam-snapshot></app-webcam-snapshot>
+</div>
 </ion-content>

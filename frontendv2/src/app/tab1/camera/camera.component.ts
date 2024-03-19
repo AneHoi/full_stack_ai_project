@@ -8,7 +8,7 @@ import {Allergen} from "../../tab2/tab2.page";
 @Component({
   selector: "app-webcam-snapshot",
   templateUrl: "./camera.component.html",
-  styleUrls: ["./camera.component.scss"]
+  styleUrls: ["../tap1.scss"]
 })
 export class WebcamSnapshotComponent implements AfterViewInit {
 
