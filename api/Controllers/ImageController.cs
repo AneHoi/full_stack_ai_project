@@ -27,32 +27,32 @@ public class ImageController : ControllerBase
         {
             // Get the path to the system's temporary directory
             var tempPath = Path.GetTempPath();
-            Console.WriteLine("Path: "+tempPath);
 
             // Save the uploaded file to the temporary directory
             var imagePath = Path.Combine(tempPath, image.FileName);
-            
-            using (var stream = new FileStream(imagePath, FileMode.Create))
+
+            await using (var stream = new FileStream(imagePath, FileMode.Create))
             {
                 await image.CopyToAsync(stream);
             }
-            
-           var result = _computerVisionService.MakeRequest(imagePath);
-           
-           var session = HttpContext.GetSessionData()!;
-            
-           var result1 = _userAllergeneService.isUserAllergicTo(result.Result, session.UserId);
-            
-            return new ImageResultDto
+
+            using (var computerResult = _computerVisionService.MakeRequest(imagePath))
             {
-                text = result.Result,
-                allergenes = result1
-            };
+                var session = HttpContext.GetSessionData()!;
+            
+                var allergenResult = _userAllergeneService.isUserAllergicTo(computerResult.Result, session.UserId);
+            
+                return new ImageResultDto
+                {
+                    text = computerResult.Result,
+                    allergenes = allergenResult
+                };
+            }
         }
         catch (Exception ex)
         {
             // Handle any errors
-            throw new Exception();
+            throw new Exception("", ex);
         }
     }
 }

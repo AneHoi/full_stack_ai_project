@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {ResultDto} from "../camera/camera.component";
 
 @Component({
   selector: 'app-custom-modal',
@@ -16,7 +17,4 @@ export class CustomModalComponent {
   }
 }
 
-export interface ResultDto {
-  text: string;
-  allergenes: string[];
-}
+

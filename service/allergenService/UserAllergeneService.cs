@@ -24,14 +24,14 @@ public class UserAllergeneService
         return ingredientlist;
     }
 
-    public List<string> isUserAllergicTo(string result, int userId)
+    public List<AllergenWithCategoryDto> isUserAllergicTo(string result, int userId)
     {
         List<string> strings = seperateBySpace(result);
 
-        var b = _repo.GetUsersAllergens(userId);
+        var userAllergyList = _repo.GetUsersAllergens(userId);
 
-
-        var f = _repo.CheckForAllergy(strings, b.ToList());
-       return f;
+        
+        var  allergenIngredients= _repo.CheckForAllergy(strings, userAllergyList.ToList());
+       return allergenIngredients;
     }
 }

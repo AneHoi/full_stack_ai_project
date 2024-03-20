@@ -5,7 +5,7 @@
     <p><strong>Text:</strong> {{ result?.text }}</p>
     <p><strong>Allergens:</strong></p>
     <ul>
-      <li *ngFor="let allergen of result?.allergenes">{{ allergen }}</li>
+      <li *ngFor="let allergen of result?.allergenes">{{ allergen.allergen_name }} {{ allergen.category_name }}</li>
     </ul>
   </div>
 </div>
